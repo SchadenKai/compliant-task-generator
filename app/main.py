@@ -7,7 +7,7 @@ import os
 
 from app.controller.task_generation import generate_task_details
 from app.models.task import TaskRequest, TaskResponse
-
+from app.router.task import app as task_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -28,10 +28,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(task_router)
+
+
 @app.get("/health")
 def health_check():
     return {"status": "ok"}
 
-@app.get("/generate_task_details")
-async def generate_task_details_api(request: TaskRequest):
-    return generate_task_details(request.title, request.description)
