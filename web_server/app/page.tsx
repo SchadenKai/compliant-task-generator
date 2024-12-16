@@ -1,101 +1,56 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+import TaskInput from "./components/TaskInput";
+import { TaskRequest, TaskResponse } from "./types/task";
+import axios from "axios";
+import TaskOutput from "./components/TaskOutput";
+
+const API_SERVER_URL = "http://localhost:8080";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [output, setOutput] = useState<TaskResponse | null>(null);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+  const generateTaskDetails = async (data: TaskRequest) => {
+    try {
+      const response = await axios.post<TaskResponse>(
+        `${API_SERVER_URL}/generate_task_details`,
+        data
+      );
+      setOutput(response.data);
+    } catch (error: unknown) {
+      console.error("Error generating task details:", error);
+      setOutput({
+        error: "Failed to generate task details. Please try again.",
+      } as TaskResponse);
+    }
+  };
+
+  const LeftSide = () => {
+    return (
+      <div className="h-full w-full flex flex-col items-center justify-start gap-4">
+        <h2 className="text-2xl font-bold">Generate Tasks</h2>
+        <TaskInput onGenerate={generateTaskDetails} />
+      </div>
+    );
+  };
+
+  const RightSide = () => {
+    return (
+      <div className="h-full w-full flex flex-col items-center justify-start gap-4">
+        <h2 className="text-2xl font-bold">Task Details</h2>
+        <TaskOutput output={output} />
+      </div>
+    );
+  };
+
+  return (
+    <div className="max-h-screen max-w-screen flex flex-col items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)] overflow-y-auto">
+      <h1 className="text-4xl font-bold">Compliant Task Generator</h1>
+      <div className="h-full w-full flex flex-row items-start justify-center gap-16 sm:gap-32">
+        <LeftSide />
+        <RightSide />
+      </div>
     </div>
   );
 }
