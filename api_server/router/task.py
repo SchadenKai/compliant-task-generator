@@ -7,6 +7,6 @@ from models.task import TaskRequest
 
 app = APIRouter(tags=["task"])
 
-@app.get("/generate_task_details")
+@app.post("/generate_task_details")
 async def generate_task_details_api(request: TaskRequest):
     return generate_task_details(request.title, request.description)
