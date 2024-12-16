@@ -51,7 +51,7 @@ _SYSTEM_PROMPT = (
     "   - User accessibility issues.\n"
     "   - Compliance risks.\n"
     "   - Security risks.\n"
-    "2. Create mitigation strategies for the identified risks.\n"
+    "2. Create mitigation straktegies for the identified risks.\n"
     "<context>\n"
 )
 
