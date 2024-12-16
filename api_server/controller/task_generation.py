@@ -2,7 +2,7 @@ import json
 from fastapi import HTTPException
 import openai
 from pydantic import ValidationError
-from app.models.task import TaskResponse
+from models.task import TaskResponse
 
 _SYSTEM_PROMPT = (
     "<instructions>\n"

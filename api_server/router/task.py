@@ -1,8 +1,8 @@
 
 from fastapi import APIRouter
 
-from app.controller.task_generation import generate_task_details
-from app.models.task import TaskRequest
+from controller.task_generation import generate_task_details
+from models.task import TaskRequest
 
 
 app = APIRouter(tags=["task"])

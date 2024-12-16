@@ -5,9 +5,7 @@ from pydantic import BaseModel
 import openai
 import os
 
-from app.controller.task_generation import generate_task_details
-from app.models.task import TaskRequest, TaskResponse
-from app.router.task import app as task_router
+from router.task import app as task_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
