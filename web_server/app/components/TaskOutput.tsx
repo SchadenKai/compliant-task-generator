@@ -1,11 +1,11 @@
 "use client";
 
 // components/TaskOutput.tsx
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { TaskResponse } from "../types/task";
 import useLocalStorage from "../hooks/useLocalStorage";
 import { Badge } from "@/components/ui/badge";
-import { LucideCheck, LucideCheckCircle } from "lucide-react";
+import { LucideCheckCircle } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 
 interface TaskOutputProps {
@@ -14,14 +14,20 @@ interface TaskOutputProps {
 
 const TaskOutput: React.FC<TaskOutputProps> = ({ output }) => {
   const [storedOutput, setStoredOutput] = useLocalStorage("taskOutput", null);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    setIsClient(true);
     if (output) {
       setStoredOutput(output);
     }
   }, [output, setStoredOutput]);
 
   const displayOutput = storedOutput || output;
+
+  if (!isClient) {
+    return null; // Render nothing on the server
+  }
 
   if (!displayOutput) {
     return null;

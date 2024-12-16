@@ -10,7 +10,6 @@ from router.task import app as task_router
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     openai.api_key = os.getenv("OPENAI_API_KEY")
-    print(openai.api_key)
     yield
 
 # Initialize the FastAPI app

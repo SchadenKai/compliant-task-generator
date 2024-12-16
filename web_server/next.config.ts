@@ -1,7 +1,10 @@
 import type { NextConfig } from "next";
+import "dotenv";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  env: {
+    API_SERVER_URL: process.env.API_SERVER_URL,
+  },
 };
 
 export default nextConfig;

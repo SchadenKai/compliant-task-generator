@@ -6,7 +6,7 @@ import { TaskRequest, TaskResponse } from "./types/task";
 import axios from "axios";
 import TaskOutput from "./components/TaskOutput";
 
-const API_SERVER_URL = "http://localhost:8080";
+const API_SERVER_URL = process.env.API_SERVER_URL;
 
 export default function Home() {
   const [output, setOutput] = useState<TaskResponse | null>(null);
