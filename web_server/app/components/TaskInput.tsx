@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import useLocalStorage from "../hooks/useLocalStorage";
 
 interface TaskInputProps {
   onGenerate: (data: TaskRequest) => void;
@@ -16,11 +17,21 @@ const TaskInput: React.FC<TaskInputProps> = ({ onGenerate }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
+  const [storedTitle, setStoredTitle] = useLocalStorage('taskTitle', '');
+  const [storedDescription, setStoredDescription] = useLocalStorage('taskDescription', '');
 
-  const handleSubmit = (e: React.FormEvent) => {
-    setIsLoading(true);
+  React.useEffect(() => {
+    setTitle(storedTitle);
+    setDescription(storedDescription);
+  }
+  , [storedTitle, storedDescription]);  
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onGenerate({ title, description });
+    setIsLoading(true);
+    setStoredTitle(title);
+    setStoredDescription(description);
+    await onGenerate({ title, description });
     setIsLoading(false);
   };
 
