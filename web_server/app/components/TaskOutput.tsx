@@ -6,6 +6,7 @@ import { TaskResponse } from "../types/task";
 import useLocalStorage from "../hooks/useLocalStorage";
 import { Badge } from "@/components/ui/badge";
 import { LucideCheck, LucideCheckCircle } from "lucide-react";
+import ReactMarkdown from "react-markdown";
 
 interface TaskOutputProps {
   output: TaskResponse | null;
@@ -33,7 +34,8 @@ const TaskOutput: React.FC<TaskOutputProps> = ({ output }) => {
   return (
     <div className="bg-gray-100 p-4 rounded-lg my-4">
       <Badge variant="success" className="mb-4 gap-3 py-1 px-2">
-        <LucideCheckCircle size={16}/>Task Generated Successfully!
+        <LucideCheckCircle size={16} />
+        Task Generated Successfully!
       </Badge>
       <table className="w-full">
         <tbody>
@@ -43,7 +45,9 @@ const TaskOutput: React.FC<TaskOutputProps> = ({ output }) => {
           </tr>
           <tr>
             <td className="font-semibold">Description:</td>
-            <td>{displayOutput.description}</td>
+            <td>
+              <ReactMarkdown>{displayOutput.description}</ReactMarkdown>
+            </td>
           </tr>
           <tr>
             <td className="font-semibold">Acceptance Criteria:</td>

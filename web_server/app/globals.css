@@ -99,6 +99,7 @@ th, td {
   padding: 0.75rem;
   text-align: left;
   align-items: start;
+  vertical-align: top;
 }
 
 th {
@@ -112,7 +113,7 @@ ul {
 }
 
 li {
-  margin: 0.5rem 0;
+  margin: 0.2rem 0 0.5rem 0;
 }
 
 /* ...existing code... */
