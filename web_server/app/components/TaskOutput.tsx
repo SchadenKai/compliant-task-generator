@@ -22,6 +22,10 @@ const TaskOutput: React.FC<TaskOutputProps> = ({ output }) => {
 
   const displayOutput = storedOutput || output;
 
+  if (!displayOutput) {
+    return null;
+  }
+
   if (displayOutput.error) {
     return <div className="text-destructive">{displayOutput.error}</div>;
   }
